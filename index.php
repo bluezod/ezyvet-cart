@@ -50,6 +50,7 @@ if (isset($_GET['cart_action']) && isset($_GET['product_name'])) {
     if ($success) {
         $_SESSION['cart'] = $cart->getItems();
     }
+    header('location:' . $_SERVER['PHP_SELF']);
 }
 ?>
 
@@ -103,4 +104,4 @@ if (isset($_GET['cart_action']) && isset($_GET['product_name'])) {
 <?php endif; ?>
 <hr>
 <h1>Overall Total</h1>
-The total amount of your cart is <strong><?php echo $cart->getOverallTotal() ?></strong>.
+The total amount of your cart is <strong><?php echo $cart->getOverallTotal() ?></strong>
