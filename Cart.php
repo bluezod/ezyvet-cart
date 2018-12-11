@@ -27,7 +27,7 @@ class Cart
             if (isset($this->items[$name])) {
                 $qty += $this->items[$name]['qty'];
             }
-            $rowTotal = number_format(round($price * $qty, 2), 2);
+            $rowTotal = round($price * $qty, 2);
             $this->items[$name] = array(
                 'name' => $name,
                 'unit_price' => $price,
