@@ -1,4 +1,6 @@
 <?php
+session_start();
+require_once("Cart.php");
 /**
  * Created by PhpStorm.
  * User: bluezod
@@ -14,6 +16,25 @@ $products = array(
     array("name" => "Hacksaw", "price" => 18.45)
 );
 // ##################################################
+// Retrieve cart object stored in session
+if (isset($_SESSION['cart'])) {
+    $cart = $_SESSION['cart'];
+} else {
+    // Init the cart object
+    $cart = new Cart;
+}
+if (isset($_GET['cart_action'])) {
+    $cartAction = $_GET['cart_action'];
+    switch ($cartAction) {
+        case 'add':
+            break;
+        case  'remove':
+            break;
+        default:
+            break;
+    }
+    $_SESSION['cart'] = $cart;
+}
 ?>
 
 <html>
@@ -29,17 +50,30 @@ $products = array(
         <th>Action</th>
     </tr>
     <?php foreach ($products as $product): ?>
-        <tr>
-            <td><?php echo $product['name']?></td>
-            <td><?php echo $product['price']?></td>
-            <td><a href="#">Add</a></td>
-        </tr>
+        <form method="post" action="index.php?cart_action=add&product_name=<?php echo $product['name'] ?>">
+            <tr>
+                <td><?php echo $product['name'] ?></td>
+                <td><?php echo number_format($product['price'], 2) ?></td>
+                <td><input type="submit" value="Add"/></td>
+            </tr>
+        </form>
     <?php endforeach; ?>
 </table>
 <hr>
 <h1>Your Cart</h1>
+<?php if ($cart->isEmpty()) : ?>
+    Your cart is empty. Please feed it with some products.
+<?php else: ?>
+<?php endif; ?>
 <hr>
-<h1>Total</h1>
-
-
+<h1>Overall Total</h1>
+<?php
+$totalAmount = 0;
+if (!$cart->isEmpty()) {
+    foreach ($cart->getItems() as $item) {
+        $totalAmount += isset($item['row_total']) ? $item['row_total'] : 0;
+    }
+}
+?>
+The total amount of your cart is <strong><?php echo $totalAmount ?></strong>.
 <?php var_dump($products); ?>
